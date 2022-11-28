@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -6,68 +8,115 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUI {
-    private JTextField SearchField;
+    private JTextField databaseLocationTextfield;
     DefaultListModel<String> model = new DefaultListModel<>();
-    private JList<String> MasterList;
+    public JList<String> MasterList;
     private JPanel GUI_Window;
     private JButton showRecordsButton;
     private JLabel recordLabel;
-    private JButton connectButton;
-
-    Connection con;
-    Statement stmt;
+    private JButton loadButton;
+    private JButton deleteButton;
+    private JButton addButton;
+    private JButton editButton;
+    static Connection con;
+    static Statement stmt;
+    public static int index;
+    public static boolean isEditing = false;
     List<Book> bookList =  new ArrayList<>();
 
     public void Connect()
     {
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\ZAFER\\OneDrive - University of Greenwich\\Year3\\JVM\\Coursework\\SQLite Database\\mydatabase.db");
+            con = DriverManager.getConnection("jdbc:sqlite:" + databaseLocationTextfield.getText());
             System.out.println("Success");
         }
         catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public void showRecords()
+    {
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Books;" );
+
+            model.removeAllElements();
+
+            while(rs.next()){
+                int id = rs.getInt("ID");
+                String name = rs.getString("Title");
+                String author = rs.getString("Author");
+                String publisher = rs.getString("Publisher");
+                String subject = rs.getString("Subject");
+                int year = rs.getInt("Year");
+
+                Book newBook = new Book(id,name,author,publisher,subject,year);
+                bookList.add(newBook);
+                model.addElement(newBook.toString());
+                MasterList.setModel(model);
+            }
+        }
+        catch (SQLException e1)
+        {
+            e1.printStackTrace();
+        }
+    }
     public GUI() {
         showRecordsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery( "SELECT * FROM Books;" );
-
-                    while(rs.next()){
-                        int id = rs.getInt("ID");
-                        String name = rs.getString("Title");
-                        String author = rs.getString("Author");
-                        String publisher = rs.getString("Publisher");
-                        String subject = rs.getString("Subject");
-                        int year = rs.getInt("Year");
-
-                        Book newBook = new Book(id,name,author,publisher,subject,year);
-                        bookList.add(newBook);
-
-                        model.addElement(newBook.toString());
-                        MasterList.setModel(model);
-                    }
-                }
-                catch (SQLException e1)
-                {
-                    e1.printStackTrace();
-                }
+                showRecords();
             }
         });
-        connectButton.addActionListener(new ActionListener() {
+        loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Connect();
             }
         });
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isEditing = false;
+
+                addRecordPopup addRecordPopup = new addRecordPopup();
+                addRecordPopup.setLocationRelativeTo(null);
+                addRecordPopup.pack();
+                addRecordPopup.show();
+            }
+        });
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isEditing = true;
+                
+                addRecordPopup editPopup = new addRecordPopup();
+                editPopup.setLocationRelativeTo(null);
+                editPopup.pack();
+                editPopup.show();
+            }
+        });
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deletionPopup deletionPopup = new deletionPopup();
+                deletionPopup.setLocationRelativeTo(null);
+                deletionPopup.pack();
+                deletionPopup.show();
+            }
+        });
+        MasterList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                index = MasterList.getSelectedIndex() + 1;
+            }
+        });
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("GUI");
+        JFrame frame = new JFrame("Library Manager: Admin");
         frame.setContentPane(new GUI().GUI_Window);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
