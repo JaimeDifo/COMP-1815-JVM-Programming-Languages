@@ -80,12 +80,7 @@
         </constraints>
         <properties/>
         <border type="none"/>
-        <children>
-          <component id="eb4a9" class="javax.swing.JList" binding="MasterList">
-            <constraints/>
-            <properties/>
-          </component>
-        </children>
+        <children/>
       </scrollpane>
       <scrollpane id="8e847">
         <constraints>

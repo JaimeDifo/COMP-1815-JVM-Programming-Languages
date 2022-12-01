@@ -2,16 +2,18 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GUI {
     private JTextField databaseLocationTextfield;
-    DefaultListModel<String> model = new DefaultListModel<>();
-    public JList<String> MasterList;
     private JPanel GUI_Window;
     private JButton showRecordsButton;
     private JLabel recordLabel;
@@ -44,11 +46,10 @@ public class GUI {
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM Books;" );
 
-            model.removeAllElements();
-
             String column[]={"id", "title", "author", "publisher", "subject", "year"};
             String data[][]={};
             DefaultTableModel tableModel = new DefaultTableModel(data, column);
+            //MasterTable.setRowSelectionInterval(0, 0);
 
             while(rs.next()){
                 int id = rs.getInt("ID");
@@ -57,13 +58,6 @@ public class GUI {
                 String publisher = rs.getString("Publisher");
                 String subject = rs.getString("Subject");
                 int year = rs.getInt("Year");
-
-                System.out.println(id);
-                System.out.println(name);
-                System.out.println(author);
-                System.out.println(publisher);
-                System.out.println(subject);
-                System.out.println(year);
 
                 tableModel.addRow(new Object[]{
                         rs.getInt("ID"),
@@ -75,16 +69,7 @@ public class GUI {
 
                 Book newBook = new Book(id,name,author,publisher,subject,year);
                 bookList.add(newBook);
-                model.addElement(newBook.toString());
-                MasterList.setModel(model);
             }
-
-            //TABLE PART
-
-//            String data[][]={ {"101","Amit","670000"},
-//                    {"102","Jai","780000"},
-//                    {"101","Sachin","700000"}};
-            //MasterTable = new JTable(new DefaultTableModel(data, column));
             MasterTable.setModel(tableModel);
         }
         catch (SQLException e1)
@@ -136,10 +121,15 @@ public class GUI {
                 deletionPopup.show();
             }
         });
-        MasterList.addListSelectionListener(new ListSelectionListener() {
+        MasterTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                index = MasterList.getSelectedIndex() + 1;
+            public void valueChanged(ListSelectionEvent event) {
+                if(event.getValueIsAdjusting()) {
+                    if(MasterTable.getSelectedRow() > 0) {
+                        index = Integer.parseInt((MasterTable.getValueAt(MasterTable.getSelectedRow(), 0)).toString());
+                        System.out.println(index);
+                    }
+                }
             }
         });
     }
