@@ -1,52 +1,78 @@
 class main {
-     fun bubbleSort(bookList: MutableList<Book>) {
+    fun bubbleSort(bookList: MutableList<Book>) {
         for (i in 0 until bookList.size - 1) {
             for (j in 0 until bookList.size - i - 1) {
-                val title_1: String = bookList.get(j).title.lowercase()
-                val title_2: String = bookList.get(j + 1).title.lowercase()
-                if (title_1>title_2) {
-                    val swap: Book = bookList.get(j)
-                    bookList.set(j, bookList.get(j + 1))
-                    bookList.set(j + 1, swap)
+                val book1 = bookList.get(j)
+                val title1: String = book1.title.lowercase()
+                val author1 = book1.author.lowercase()
+                val book2 = bookList.get(j + 1)
+                val title2: String = book2.title.lowercase()
+                val author2 = book2.author.lowercase()
+
+                if (author1 > author2) {
+                    val swap: Book = book1
+                    bookList[j] = book2
+                    bookList[j + 1] = swap
+                } else if (author1 == author2) {
+                    if (title1 > title2) {
+                        val swap: Book = book1
+                        bookList[j] = book2
+                        bookList[j + 1] = swap
+                    }
+
                 }
             }
         }
     }
 
-//    fun mergeSort(a: IntArray, n: Int) {
-//        if (n < 2) {
-//            return
-//        }
-//        val mid = n / 2
-//        val l = IntArray(mid)
-//        val r = IntArray(n - mid)
-//        for (i in 0 until mid) {
-//            l[i] = a[i]
-//        }
-//        for (i in mid until n) {
-//            r[i - mid] = a[i]
-//        }
-//        mergeSort(l, mid)
-//        mergeSort(r, n - mid)
-//        merge(a, l, r, mid, n - mid)
-//    }
-//    fun merge(
-//            a: MutableList<Book>, l: MutableList<Book>, r: MutableList<Book>, left: Book, right: Book) {
-//        var i = 0
-//        var j = 0
-//        var k = 0
-//        while (i < left && j < right) {
-//            if (l[i] <= r[j]) {
-//                a[k++] = l[i++]
-//            } else {
-//                a[k++] = r[j++]
-//            }
-//        }
-//        while (i < left) {
-//            a[k++] = l[i++]
-//        }
-//        while (j < right) {
-//            a[k++] = r[j++]
-//        }
-//    }
+
+    fun mergeSort(list: List<Book>): List<Book> {
+        if (list.size <= 1) {
+            return list
+        }
+
+        val middle = list.size / 2
+        val left = list.subList(0,middle);
+        val right = list.subList(middle,list.size);
+
+        return merge(mergeSort(left), mergeSort(right))
+    }
+
+    private fun merge(left: List<Book>, right: List<Book>): List<Book>  {
+        var indexLeft = 0
+        var indexRight = 0
+        val newList : MutableList<Book> = mutableListOf()
+
+
+        while (indexLeft < left.count() && indexRight < right.count()) {
+            val book1 = left[indexLeft]
+            val book2 = right[indexRight]
+            if(book1.author < book2.author) {
+                newList.add(book1)
+                indexLeft++
+            } else if (book2.author < book1.author) {
+                newList.add(book2)
+                indexRight++
+            } else { // authors are the same
+                if(book1.title < book2.title) {
+                    newList.add(book1)
+                    indexLeft++
+                } else if (book2.title < book1.title) {
+                    newList.add(book2)
+                    indexRight++
+                }
+            }
+        }
+
+        while (indexLeft < left.size) {
+            newList.add(left[indexLeft])
+            indexLeft++
+        }
+
+        while (indexRight < right.size) {
+            newList.add(right[indexRight])
+            indexRight++
+        }
+        return newList;
+    }
 }
