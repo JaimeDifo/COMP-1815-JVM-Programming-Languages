@@ -2,12 +2,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +11,15 @@ import java.util.List;
 public class GUI {
     private JTextField databaseLocationTextfield;
     private JPanel GUI_Window;
-    private JButton showRecordsButton;
-    private JLabel recordLabel;
     private JButton loadButton;
     private JButton deleteButton;
     private JButton addButton;
     private JButton editButton;
     private JTable MasterTable;
+    private JComboBox comboBox1;
+    private JButton sortButton;
+    private JTextField textField1;
+    private JButton searchButton;
     static Connection con;
     static Statement stmt;
     public static int index;
@@ -34,15 +32,32 @@ public class GUI {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:" + databaseLocationTextfield.getText());
             System.out.println("Success");
+            showRecords();
         }
         catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
-
+    public void bubbleSort(){
+//        for (int i=0;i<bookList.size()-1;++i){
+//
+//            for(int j=0;j<bookList.size()-i-1; ++j){
+//                String title_1 = bookList.get(j+1).getTitle().toLowerCase();
+//                String title_2 = bookList.get(j).getTitle().toLowerCase();
+//                if(title_1.compareTo(title_2)<0){
+//                    Book swap = bookList.get(j);
+//                    bookList.set(j, bookList.get(j+1));
+//                    bookList.set(j+1, swap);
+//                }
+//            }
+//        }
+        main test = new main();
+        test.bubbleSort(bookList);
+    }
     public void showRecords()
     {
         try {
+            bookList.clear();
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM Books;" );
 
@@ -53,7 +68,7 @@ public class GUI {
 
             while(rs.next()){
                 int id = rs.getInt("ID");
-                String name = rs.getString("Title");
+                String title = rs.getString("Title");
                 String author = rs.getString("Author");
                 String publisher = rs.getString("Publisher");
                 String subject = rs.getString("Subject");
@@ -67,7 +82,7 @@ public class GUI {
                         rs.getString("Subject"),
                         rs.getInt("Year")});
 
-                Book newBook = new Book(id,name,author,publisher,subject,year);
+                Book newBook = new Book(id,title,author,publisher,subject,year);
                 bookList.add(newBook);
             }
             MasterTable.setModel(tableModel);
@@ -77,13 +92,32 @@ public class GUI {
             e1.printStackTrace();
         }
     }
-    public GUI() {
-        showRecordsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showRecords();
+    public void saveAllRecord(){
+        //DELETE FROM Customers;
+        try{
+            // Clearing all rows from table
+            stmt.executeUpdate("DELETE FROM Books");
+            // Make auto increment restart from 1
+            stmt.executeUpdate("UPDATE sqlite_sequence SET seq=0 WHERE name='Books'");
+            for (Book book : bookList) {
+                int rs = GUI.stmt.executeUpdate( "INSERT INTO Books (Title, Author, Publisher, Subject, Year)" +
+                        "VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getPublisher() + "', '" + book.getSubject() + "', '" + book.getYear() + "')" );
             }
-        });
+
+        }
+        catch (SQLException e1)
+        {
+            e1.printStackTrace();
+        }
+    }
+    public GUI() {
+//        showRecordsButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                showRecords();
+//            }
+//        });
+
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,6 +133,7 @@ public class GUI {
                 addRecordPopup.setLocationRelativeTo(null);
                 addRecordPopup.pack();
                 addRecordPopup.show();
+                showRecords();
             }
         });
         editButton.addActionListener(new ActionListener() {
@@ -110,6 +145,7 @@ public class GUI {
                 editPopup.setLocationRelativeTo(null);
                 editPopup.pack();
                 editPopup.show();
+                showRecords();
             }
         });
         deleteButton.addActionListener(new ActionListener() {
@@ -119,6 +155,7 @@ public class GUI {
                 deletionPopup.setLocationRelativeTo(null);
                 deletionPopup.pack();
                 deletionPopup.show();
+                showRecords();
             }
         });
         MasterTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -132,6 +169,13 @@ public class GUI {
                 }
             }
         });
+        sortButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bubbleSort();
+                saveAllRecord();
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -141,6 +185,7 @@ public class GUI {
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
+
     }
 }
 
