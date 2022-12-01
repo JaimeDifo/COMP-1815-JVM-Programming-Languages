@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import sortAlgos.BubbleSort;
+
 
 public class GUI {
     private JTextField databaseLocationTextfield;
@@ -26,6 +28,8 @@ public class GUI {
     public static boolean isEditing = false;
     List<Book> bookList =  new ArrayList<>();
 
+
+
     public void Connect()
     {
         try {
@@ -40,6 +44,7 @@ public class GUI {
 
     public void showRecords()
     {
+
         try {
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM Books;" );
@@ -73,18 +78,23 @@ public class GUI {
                         rs.getString("Subject"),
                         rs.getInt("Year")});
 
+                int ids = rs.getInt("ID");
+
+                //sortAlgo.main();
+
                 Book newBook = new Book(id,name,author,publisher,subject,year);
                 bookList.add(newBook);
                 model.addElement(newBook.toString());
                 MasterList.setModel(model);
             }
 
-            //TABLE PART
+            BubbleSort sort = new BubbleSort();
+            int[] numbers = {1,4,76,34,6};
+            int[] sortedNumbers = sort.bubbleSort(numbers);
+            for (int i : sortedNumbers) {
+                System.out.println(i);
+            }
 
-//            String data[][]={ {"101","Amit","670000"},
-//                    {"102","Jai","780000"},
-//                    {"101","Sachin","700000"}};
-            //MasterTable = new JTable(new DefaultTableModel(data, column));
             MasterTable.setModel(tableModel);
         }
         catch (SQLException e1)
@@ -151,6 +161,9 @@ public class GUI {
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
+
+        //sortAlgo.main();
+
     }
 }
 
