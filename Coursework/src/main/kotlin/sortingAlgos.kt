@@ -1,4 +1,4 @@
-class main {
+class sortingAlgos {
     fun bubbleSort(bookList: MutableList<Book>) {
         for (i in 0 until bookList.size - 1) {
             for (j in 0 until bookList.size - i - 1) {

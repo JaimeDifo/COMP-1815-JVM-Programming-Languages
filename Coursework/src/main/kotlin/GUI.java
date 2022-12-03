@@ -10,26 +10,31 @@ import java.util.List;
 
 public class GUI {
     private JTextField databaseLocationTextfield;
-    private JPanel GUI_Window;
+    public JPanel GUI_Window;
     private JButton loadButton;
     private JButton deleteButton;
     private JButton addButton;
     private JButton editButton;
     private JTable MasterTable;
-    private JComboBox comboBox1;
     private JButton sortButton;
-    private JTextField textField1;
+    private JTextField searchField;
     private JButton searchButton;
+    private JComboBox searchCategory;
+    private JComboBox sortCategory;
     static Connection con;
     static Statement stmt;
     public static int index;
     public static boolean isEditing = false;
     List<Book> bookList = new ArrayList<>();
+    String searchedItem = "";
+    Integer searchedColumn = 1;
+    Integer sortColumn = 1;
 
     public void Connect() {
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:" + databaseLocationTextfield.getText());
+//            con = DriverManager.getConnection("jdbc:sqlite:src/main/kotlin/mydatabase.db");
             System.out.println("Success");
             showRecords();
         } catch (SQLException | ClassNotFoundException e) {
@@ -37,25 +42,32 @@ public class GUI {
         }
     }
 
+    // BubbleSort invoke
     public void bubbleSort() {
-        main test = new main();
-        test.bubbleSort(bookList);
+        sortingAlgos bubble = new sortingAlgos();
+        bubble.bubbleSort(bookList);
     }
 
+    // MergeSort invoke
     public void mergeSort() {
-        main test = new main();
-        bookList = test.mergeSort(bookList);
+        sortingAlgos merge = new sortingAlgos();
+        bookList = merge.mergeSort(bookList);
     }
+
+    public void radixSort() {
+        RadixSortV2 radix = new RadixSortV2();
+        bookList = radix.initRadixSort(bookList);
+    }
+
     public void showRecords() {
         try {
-            bookList.clear();
+            bookList = new ArrayList<Book>();
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM Books;");
 
             String column[] = {"id", "title", "author", "publisher", "subject", "year"};
             String data[][] = {};
             DefaultTableModel tableModel = new DefaultTableModel(data, column);
-            //MasterTable.setRowSelectionInterval(0, 0);
 
             while (rs.next()) {
                 int id = rs.getInt("ID");
@@ -65,18 +77,27 @@ public class GUI {
                 String subject = rs.getString("Subject");
                 int year = rs.getInt("Year");
 
-                tableModel.addRow(new Object[]{
+                Object[] newRow = new Object[]{
                         rs.getInt("ID"),
                         rs.getString("Title"),
                         rs.getString("Author"),
                         rs.getString("Publisher"),
                         rs.getString("Subject"),
-                        rs.getInt("Year")});
+                        rs.getInt("Year")};
 
-                Book newBook = new Book(id, title, author, publisher, subject, year);
+                if (!searchedItem.equals("")) {
+                    if (searchedItem.equals(newRow[searchedColumn].toString())) {
+                        tableModel.addRow(newRow);
+                    }
+                } else {
+                    tableModel.addRow(newRow);
+                }
+
+                Book newBook = new Book(id,title, author,  publisher, subject, year);
                 bookList.add(newBook);
             }
             MasterTable.setModel(tableModel);
+            searchedItem = "";
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
@@ -91,7 +112,8 @@ public class GUI {
             stmt.executeUpdate("UPDATE sqlite_sequence SET seq=0 WHERE name='Books'");
             for (Book book : bookList) {
                 int rs = GUI.stmt.executeUpdate("INSERT INTO Books (Title, Author, Publisher, Subject, Year)" +
-                        "VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getPublisher() + "', '" + book.getSubject() + "', '" + book.getYear() + "')");
+                        "VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getPublisher() +
+                        "', '" + book.getSubject() + "', '" + book.getYear() + "')");
             }
 
         } catch (SQLException e1) {
@@ -99,13 +121,31 @@ public class GUI {
         }
     }
 
+    public void search() {
+        searchedItem = searchField.getText();
+        searchedColumn = searchCategory.getSelectedIndex() + 1;
+        //System.out.println(searchedItem);
+        showRecords();
+    }
+
+    public void sort() {
+        sortColumn = sortCategory.getSelectedIndex() + 1;
+        System.out.println(sortColumn);
+        showRecords();
+    }
+
+    //PARSE THE TABLE MODEL AS AN ARRAY
+    public Object[][] getTableData(JTable table) {
+        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+        Object[][] tableData = new Object[nRow][nCol];
+        for (int i = 0; i < nRow; i++)
+            for (int j = 0; j < nCol; j++)
+                tableData[i][j] = dtm.getValueAt(i, j);
+        return tableData;
+    }
+
     public GUI() {
-//        showRecordsButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                showRecords();
-//            }
-//        });
 
         loadButton.addActionListener(new ActionListener() {
             @Override
@@ -159,31 +199,34 @@ public class GUI {
             }
         });
         sortButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-                // get selected algo from UI (bubble, merge, radix)
-//                String algo = "bubble";
-//                switch (algo) {
-//                    "bubble":
-//                    bubbleSort();
-//
-//                }merge();
-                mergeSort();
-                saveAllRecord();
-                showRecords();
+                if ("Bubble sort" == sortCategory.getSelectedItem()) {
+                    bubbleSort();
+                    saveAllRecord();
+                    showRecords();
+                    System.out.println(sortCategory.getSelectedItem());
+                }
+                if ("Merge sort" == sortCategory.getSelectedItem()) {
+                    mergeSort();
+                    saveAllRecord();
+                    showRecords();
+                    System.out.println(sortCategory.getSelectedItem());
+                }
+                if ("Radix sort" == sortCategory.getSelectedItem()) {
+                    System.out.println(sortCategory.getSelectedItem());
+                    radixSort();
+                    saveAllRecord();
+                    showRecords();
+                }
             }
         });
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Library Manager: Admin");
-        frame.setContentPane(new GUI().GUI_Window);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);
-
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                search();
+            }
+        });
     }
 }
 
