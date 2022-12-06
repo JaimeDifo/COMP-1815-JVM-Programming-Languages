@@ -179,7 +179,7 @@ public class GUI {
     public void saveAllRecord() {
         try {
             // Clearing all rows from table
-            stmt.executeUpdate("DELETE FROM Books");
+            stmt.executeUpdate("DELETE * FROM Books");
             // Make auto increment restart from 1
             stmt.executeUpdate("UPDATE sqlite_sequence SET seq=0 WHERE name='Books'");
             for (Book book : bookList) {
