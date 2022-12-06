@@ -15,7 +15,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="C:\Users\Sergiu\OneDrive - University of Greenwich\University of Greenwich\one drive year 3\JVM\Ege\Coursework\src\main\kotlin\mydatabase.db"/>
+          <text value="C:\Users\ZAFER\OneDrive - University of Greenwich\Year3\JVM\Coursework\Coursework\src\main\kotlin\mydatabase.db"/>
         </properties>
       </component>
       <component id="c8287" class="javax.swing.JButton" binding="loadButton">

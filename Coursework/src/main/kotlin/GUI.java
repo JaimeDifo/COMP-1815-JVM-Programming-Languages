@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class GUI {
     private JTextField databaseLocationTextfield;
@@ -23,11 +24,16 @@ public class GUI {
     private JComboBox sortCategory;
     static Connection con;
     static Statement stmt;
-    public static int index;
+    static Integer index;
+    //index = Integer.parseInt((MasterTable.getValueAt(MasterTable.getSelectedRow(), 0)).toString());
     public static boolean isEditing = false;
     List<Book> bookList = new ArrayList<>();
-    String searchedItem = "";
-    Integer searchedColumn = 1;
+    Supplier<String> searchedItem = () -> {
+        return searchField.getText();
+    };
+    Supplier<Integer> searchedColumn = () -> {
+        return searchCategory.getSelectedIndex() + 1;
+    };
     Integer sortColumn = 1;
 
     public void Connect() {
@@ -85,8 +91,8 @@ public class GUI {
                         rs.getString("Subject"),
                         rs.getInt("Year")};
 
-                if (!searchedItem.equals("")) {
-                    if (searchedItem.equals(newRow[searchedColumn].toString())) {
+                if (!searchedItem.get().equals("")) {
+                    if (searchedItem.get().equals(newRow[searchedColumn.get()].toString())) {
                         tableModel.addRow(newRow);
                     }
                 } else {
@@ -97,7 +103,6 @@ public class GUI {
                 bookList.add(newBook);
             }
             MasterTable.setModel(tableModel);
-            searchedItem = "";
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
@@ -122,8 +127,6 @@ public class GUI {
     }
 
     public void search() {
-        searchedItem = searchField.getText();
-        searchedColumn = searchCategory.getSelectedIndex() + 1;
         //System.out.println(searchedItem);
         showRecords();
     }
