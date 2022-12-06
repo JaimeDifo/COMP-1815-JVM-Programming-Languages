@@ -77,13 +77,14 @@ public class GUI {
 
     public void showRecords() {
         try {
+            bookList = new ArrayList<Book>();
             stmt = con.createStatement();
             String data[][] = {};
 
             if (dataType.get() == 0){
-                ResultSet rs = stmt.executeQuery("SELECT * FROM Books;");
+                ResultSet rs = stmt.executeQuery("SELECT *  FROM Books;");
 
-                String column[] = {"id", "title", "author", "publisher", "subject", "year"};
+                String column[] = {"id", "title", "author", "publisher", "subject ", "year"};
                 DefaultTableModel tableModel = new DefaultTableModel(data, column);
 
                 while (rs.next()) {
@@ -112,6 +113,8 @@ public class GUI {
 
                     Book newBook = new Book(id, title, author, publisher, subject, year);
                     bookList.add(newBook);
+
+
                 }
                 MasterTable.setModel(tableModel);
             }
@@ -179,7 +182,7 @@ public class GUI {
     public void saveAllRecord() {
         try {
             // Clearing all rows from table
-            stmt.executeUpdate("DELETE * FROM Books");
+            stmt.executeUpdate("DELETE FROM Books");
             // Make auto increment restart from 1
             stmt.executeUpdate("UPDATE sqlite_sequence SET seq=0 WHERE name='Books'");
             for (Book book : bookList) {
