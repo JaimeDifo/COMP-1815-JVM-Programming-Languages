@@ -6,6 +6,7 @@ public class deletionPopup extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    String delTargetTable = "";
 
     public deletionPopup() {
         setContentPane(contentPane);
@@ -42,7 +43,7 @@ public class deletionPopup extends JDialog {
 
     public void deleteRecord() {
         try{
-            int rs = GUI.stmt.executeUpdate( "DELETE FROM Books WHERE ID = " + GUI.index + ";");
+            int rs = GUI.stmt.executeUpdate( "DELETE FROM " + delTargetTable + " WHERE ID = " + GUI.index + ";");
         }
         catch (SQLException e1)
         {

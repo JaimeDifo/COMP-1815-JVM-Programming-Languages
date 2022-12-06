@@ -105,14 +105,6 @@
           <text value="Search"/>
         </properties>
       </component>
-      <component id="494d1" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Records"/>
-        </properties>
-      </component>
       <component id="4d5e" class="javax.swing.JLabel">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -144,6 +136,16 @@
             <item value="Bubble sort"/>
             <item value="Merge sort"/>
             <item value="Radix sort"/>
+          </model>
+        </properties>
+      </component>
+      <component id="cfe06" class="javax.swing.JComboBox" binding="dataCategory">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="Not Loaded"/>
           </model>
         </properties>
       </component>

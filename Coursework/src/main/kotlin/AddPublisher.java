@@ -2,25 +2,18 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-public class addRecordPopup extends JDialog {
+
+public class AddPublisher extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField firstnameField;
-    private JTextField yearField;
-    private JTextField lastnameField;
-    private JTextField publisherField;
-    private JTextField subjectField;
+    private JTextField nameField;
 
-    public addRecordPopup() {
+    public AddPublisher() {
         if (GUI.isEditing){
             try {
-                ResultSet rs = GUI.stmt.executeQuery( "SELECT * FROM Books WHERE ID = " + GUI.index + ";" );
-                firstnameField.setText(rs.getString("Title"));
-                lastnameField.setText(rs.getString("Author"));
-                publisherField.setText(rs.getString("Publisher"));
-                subjectField.setText(rs.getString("Subject"));
-                yearField.setText(String.valueOf(rs.getInt("Year")));
+                ResultSet rs = GUI.stmt.executeQuery( "SELECT * FROM Publishers WHERE ID = " + GUI.index + ";" );
+                nameField.setText(rs.getString("Name"));
             }
             catch (SQLException e1) {
                 e1.printStackTrace();
@@ -61,8 +54,8 @@ public class addRecordPopup extends JDialog {
 
     public void addRecord(){
         try{
-            int rs = GUI.stmt.executeUpdate( "INSERT INTO Books (Title, Author, Publisher, Subject, Year)" +
-                    "VALUES ('" + firstnameField.getText() + "', '" + lastnameField.getText() + "', '" + publisherField.getText() + "', '" + subjectField.getText() + "', '" + yearField.getText() + "');" );
+            int rs = GUI.stmt.executeUpdate( "INSERT INTO Publishers (Name)" +
+                    "VALUES ('" + nameField.getText() + "');" );
         }
         catch (SQLException e1)
         {
@@ -72,7 +65,7 @@ public class addRecordPopup extends JDialog {
 
     public void editRecord(){
         try{
-            int rs = GUI.stmt.executeUpdate( "UPDATE Books SET Title = '" + firstnameField.getText() + "', Author = '" + lastnameField.getText() + "', Publisher = '" + publisherField.getText() + "', Subject = '" + subjectField.getText() + "', Year = '" + yearField.getText() + "' WHERE ID = "+GUI.index+" ");
+            int rs = GUI.stmt.executeUpdate( "UPDATE Publishers SET Name = '" + nameField.getText() + "' WHERE ID = "+GUI.index+" ");
         }
         catch (SQLException e1)
         {
@@ -96,7 +89,7 @@ public class addRecordPopup extends JDialog {
     }
 
     public static void main(String[] args) {
-        addRecordPopup dialog = new addRecordPopup();
+        AddPublisher dialog = new AddPublisher();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
