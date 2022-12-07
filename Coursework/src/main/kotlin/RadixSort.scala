@@ -2,7 +2,10 @@ import scala.collection.mutable
 import scala.collection.mutable.TreeMap
 import scala.jdk.CollectionConverters._
 
-class RadixSortV2 {
+class RadixSort {
+
+  var ticks = 0
+
   def initRadixSort(books: java.util.List[Book]): java.util.List[Book] = {
     val scalaBooks = books.asScala.toArray
     var result = new Array[Book](books.size())
@@ -21,11 +24,12 @@ class RadixSortV2 {
 
     // Start from the right hand side of all the strings and slowly move to the left.
     for (letter <- maxDigit - 1 to 0 by -1) {
+      ticks += 1
       val treeMap: mutable.TreeMap[Char, Array[Book]] = mutable.TreeMap()
       var currentData = ""
       // Go through each book and add the book to their appropriate groups.
       paddedData.foreach(book => {
-        currentData = book.getTitle
+        currentData = book.getAuthor
 
         // Checks if the letter that we're looking at already exists in the TreeMap, if it doesn't, create a new key.
         if (treeMap.contains(currentData(letter))) {
@@ -61,8 +65,8 @@ class RadixSortV2 {
     var maxDigit = 0
     // Get all authors provided by books, compare the string length and find the highest value.
     books.foreach(book => {
-      if (book.getTitle.length > maxDigit) {
-        maxDigit = book.getTitle.length
+      if (book.getAuthor.length > maxDigit) {
+        maxDigit = book.getAuthor.length
       }
     })
     maxDigit
@@ -75,8 +79,8 @@ class RadixSortV2 {
     val padded = books
     for (book <- padded.indices) {
       var currentData = ""
-      currentData = padded(book).getTitle
-      padded(book).setTitle(currentData.padTo(maxDigit, ' '))
+      currentData = padded(book).getAuthor
+      padded(book).setAuthor(currentData.padTo(maxDigit, ' '))
     }
     padded
   }
@@ -88,8 +92,8 @@ class RadixSortV2 {
     val unpadded = books
     for (book <- books.indices) {
       var currentData = ""
-      currentData = unpadded(book).getTitle
-      unpadded(book).setTitle(currentData.trim)
+      currentData = unpadded(book).getAuthor
+      unpadded(book).setAuthor(currentData.trim)
     }
     unpadded
   }

@@ -60,19 +60,21 @@ public class GUI {
 
     // BubbleSort invoke
     public void bubbleSort() {
-        sortingAlgos bubble = new sortingAlgos();
+        BubbleSort bubble = new BubbleSort();
         bubble.bubbleSort(bookList);
     }
 
     // MergeSort invoke
     public void mergeSort() {
-        sortingAlgos merge = new sortingAlgos();
+        MergeSort merge = new MergeSort();
         bookList = merge.mergeSort(bookList);
+        System.out.println("MergeSort - number of ticks = " + merge.getTicks());
     }
 
     public void radixSort() {
-        RadixSortV2 radix = new RadixSortV2();
+        RadixSort radix = new RadixSort();
         bookList = radix.initRadixSort(bookList);
+        System.out.println("RadixSort - number of ticks = " + radix.ticks());
     }
 
     public void showRecords() {
