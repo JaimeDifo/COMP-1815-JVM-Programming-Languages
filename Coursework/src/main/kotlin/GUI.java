@@ -200,7 +200,7 @@ public class GUI {
     public void search() {
         showRecords();
     }
-
+        // I BELIEVE THOSE ONE'S ARE NOT NEEDED
 //    public void sort() {
 //        sortColumn = sortCategory.getSelectedIndex() + 1;
 //        System.out.println(sortColumn);
