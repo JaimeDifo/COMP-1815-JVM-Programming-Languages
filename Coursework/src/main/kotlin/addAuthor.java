@@ -13,7 +13,7 @@ public class addAuthor extends JDialog {
     public addAuthor() {
         if (GUI.isEditing) {
             try {
-                ResultSet rs = GUI.stmt.executeQuery("SELECT * FROM Authors WHERE ID = " + GUI.index + ";");
+                ResultSet rs = Main.stmt.executeQuery("SELECT * FROM Authors WHERE ID = " + GUI.index + ";");
                 firstnameField.setText(rs.getString("Firstname"));
                 lastnameField.setText(rs.getString("Lastname"));
             } catch (SQLException e1) {
@@ -55,7 +55,7 @@ public class addAuthor extends JDialog {
 
     public void addRecord() {
         try {
-            int rs = GUI.stmt.executeUpdate("INSERT INTO Authors (Firstname, Lastname)" +
+            int rs = Main.stmt.executeUpdate("INSERT INTO Authors (Firstname, Lastname)" +
                     "VALUES ('" + firstnameField.getText() + "', '" + lastnameField.getText() + "');");
         } catch (SQLException e1) {
             e1.printStackTrace();
@@ -64,7 +64,7 @@ public class addAuthor extends JDialog {
 
     public void editRecord() {
         try {
-            int rs = GUI.stmt.executeUpdate("UPDATE Authors SET Firstname = '" + firstnameField.getText() +
+            int rs = Main.stmt.executeUpdate("UPDATE Authors SET Firstname = '" + firstnameField.getText() +
                     "', Lastname = '" + lastnameField.getText() + "' WHERE ID = " + GUI.index + " ");
         } catch (SQLException e1) {
             e1.printStackTrace();

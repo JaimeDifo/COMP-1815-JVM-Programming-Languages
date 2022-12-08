@@ -12,7 +12,7 @@ public class AddPublisher extends JDialog {
     public AddPublisher() {
         if (GUI.isEditing){
             try {
-                ResultSet rs = GUI.stmt.executeQuery( "SELECT * FROM Publishers WHERE ID = " + GUI.index + ";" );
+                ResultSet rs = Main.stmt.executeQuery( "SELECT * FROM Publishers WHERE ID = " + GUI.index + ";" );
                 nameField.setText(rs.getString("Name"));
             }
             catch (SQLException e1) {
@@ -54,7 +54,7 @@ public class AddPublisher extends JDialog {
 
     public void addRecord(){
         try{
-            int rs = GUI.stmt.executeUpdate( "INSERT INTO Publishers (Name)" +
+            int rs = Main.stmt.executeUpdate( "INSERT INTO Publishers (Name)" +
                     "VALUES ('" + nameField.getText() + "');" );
         }
         catch (SQLException e1)
@@ -65,7 +65,7 @@ public class AddPublisher extends JDialog {
 
     public void editRecord(){
         try{
-            int rs = GUI.stmt.executeUpdate( "UPDATE Publishers SET Name = '" + nameField.getText() + "' WHERE ID = "+GUI.index+" ");
+            int rs = Main.stmt.executeUpdate( "UPDATE Publishers SET Name = '" + nameField.getText() + "' WHERE ID = "+GUI.index+" ");
         }
         catch (SQLException e1)
         {

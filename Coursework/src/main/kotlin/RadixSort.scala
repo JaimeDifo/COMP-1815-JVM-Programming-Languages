@@ -1,7 +1,7 @@
 import scala.collection.mutable
 import scala.jdk.CollectionConverters._
 
-object RadixSort {
+class RadixSort {
 
   var ticks = 0
 
@@ -14,8 +14,8 @@ object RadixSort {
 
   def radixSort(books: Array[Book]): Array[Book] = {
     // Get starting data
-    val maxDigit = findMaxDigits(books) // Find the longest value in the list of books.
-    val paddedData = padString(books, maxDigit) // Convert all the strings in the list to the same length.
+    val maxDigit = findMaxDigits(books)           // Find the longest value in the list of books.
+    val paddedData = padString(books, maxDigit)   // Convert all the strings in the list to the same length.
 
     var previous = new Array[Array[Book]](books.length)
     previous = Array[Array[Book]](paddedData)
@@ -23,7 +23,7 @@ object RadixSort {
 
     // Start from the right hand side of all the strings and slowly move to the left.
     for (letter <- maxDigit - 1 to 0 by -1) {
-      ticks += 1
+      ticks +=1
       val treeMap: mutable.TreeMap[Char, Array[Book]] = mutable.TreeMap()
       var currentData = ""
       // Go through each book and add the book to their appropriate groups.
@@ -56,6 +56,7 @@ object RadixSort {
     result
   }
 
+
   /**
    * Finds the maximum length of digits in a string for authors.
    */
@@ -76,7 +77,7 @@ object RadixSort {
   def padString(books: Array[Book], maxDigit: Int): Array[Book] = {
     val padded = books
     for (book <- padded.indices) {
-      ticks += 1
+      ticks +=1
       var currentData = ""
       currentData = padded(book).getAuthor
       padded(book).setAuthor(currentData.padTo(maxDigit, ' '))
@@ -90,7 +91,7 @@ object RadixSort {
   def unpadString(books: Array[Book]): Array[Book] = {
     val unpadded = books
     for (book <- books.indices) {
-      ticks += 1
+      ticks +=1
       var currentData = ""
       currentData = unpadded(book).getAuthor
       unpadded(book).setAuthor(currentData.trim)

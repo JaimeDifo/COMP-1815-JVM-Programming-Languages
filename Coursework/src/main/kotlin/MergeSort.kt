@@ -1,4 +1,4 @@
-object MergeSort {
+class MergeSort {
 
     var ticks = 0
 
@@ -12,6 +12,9 @@ object MergeSort {
         val right = list.subList(middle, list.size);
 
         return merge(mergeSort(left), mergeSort(right))
+
+
+
     }
 
     private fun merge(left: List<Book>, right: List<Book>): MutableList<Book> {
@@ -19,43 +22,57 @@ object MergeSort {
         var indexRight = 0
         val newList: MutableList<Book> = mutableListOf()
 
+
+
+
         while (indexLeft < left.count() && indexRight < right.count()) {
             val book1 = left[indexLeft]
             val book2 = right[indexRight]
-            ticks++
+            ticks ++
+
 
             if (book1.author.lowercase() < book2.author.lowercase()) {
                 newList.add(book1)
                 indexLeft++
 
+
             } else if (book2.author < book1.author) {
                 newList.add(book2)
                 indexRight++
+
 
             } else { // authors are the same
                 if (book1.title < book2.title) {
                     newList.add(book1)
                     indexLeft++
 
+
                 } else if (book2.title < book1.title) {
                     newList.add(book2)
                     indexRight++
+
                 }
+
             }
+
         }
 
         while (indexLeft < left.size) {
             newList.add(left[indexLeft])
             indexLeft++
-            ticks++
+            ticks ++
+
+
         }
 
         while (indexRight < right.size) {
             newList.add(right[indexRight])
             indexRight++
-            ticks++
+            ticks ++
 
         }
+
+
         return newList
     }
 
