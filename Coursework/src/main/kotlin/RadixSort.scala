@@ -1,5 +1,4 @@
 import scala.collection.mutable
-import scala.collection.mutable.TreeMap
 import scala.jdk.CollectionConverters._
 
 class RadixSort {
@@ -24,7 +23,7 @@ class RadixSort {
 
     // Start from the right hand side of all the strings and slowly move to the left.
     for (letter <- maxDigit - 1 to 0 by -1) {
-      ticks += 1
+      ticks +=1
       val treeMap: mutable.TreeMap[Char, Array[Book]] = mutable.TreeMap()
       var currentData = ""
       // Go through each book and add the book to their appropriate groups.
@@ -78,6 +77,7 @@ class RadixSort {
   def padString(books: Array[Book], maxDigit: Int): Array[Book] = {
     val padded = books
     for (book <- padded.indices) {
+      ticks +=1
       var currentData = ""
       currentData = padded(book).getAuthor
       padded(book).setAuthor(currentData.padTo(maxDigit, ' '))
@@ -91,6 +91,7 @@ class RadixSort {
   def unpadString(books: Array[Book]): Array[Book] = {
     val unpadded = books
     for (book <- books.indices) {
+      ticks +=1
       var currentData = ""
       currentData = unpadded(book).getAuthor
       unpadded(book).setAuthor(currentData.trim)

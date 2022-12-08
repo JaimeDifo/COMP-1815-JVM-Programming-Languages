@@ -60,6 +60,7 @@ class MergeSort {
         while (indexLeft < left.size) {
             newList.add(left[indexLeft])
             indexLeft++
+            ticks ++
 
 
         }
@@ -67,6 +68,7 @@ class MergeSort {
         while (indexRight < right.size) {
             newList.add(right[indexRight])
             indexRight++
+            ticks ++
 
         }
 

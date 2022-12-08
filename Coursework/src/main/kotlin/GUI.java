@@ -22,7 +22,8 @@ public class GUI {
     private JButton searchButton;
     private JComboBox searchCategory;
     private JComboBox sortCategory;
-    private JComboBox dataCategory;
+    public JComboBox dataCategory;
+    private JPanel displayTime;
     static Connection con;
     static Statement stmt;
     static Integer index;
@@ -62,6 +63,7 @@ public class GUI {
     public void bubbleSort() {
         BubbleSort bubble = new BubbleSort();
         bubble.bubbleSort(bookList);
+        System.out.println("BubbleSort - number of ticks " + bubble.getTicks());
     }
 
     // MergeSort invoke
@@ -180,7 +182,6 @@ public class GUI {
             e1.printStackTrace();
         }
     }
-
     public void saveAllRecord() {
         try {
             // Clearing all rows from table
@@ -202,22 +203,22 @@ public class GUI {
         showRecords();
     }
 
-    public void sort() {
-        sortColumn = sortCategory.getSelectedIndex() + 1;
-        System.out.println(sortColumn);
-        showRecords();
-    }
+//    public void sort() {
+//        sortColumn = sortCategory.getSelectedIndex() + 1;
+//        System.out.println(sortColumn);
+//        showRecords();
+//    }
 
     //PARSE THE TABLE MODEL AS AN ARRAY
-    public Object[][] getTableData(JTable table) {
-        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
-        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
-        Object[][] tableData = new Object[nRow][nCol];
-        for (int i = 0; i < nRow; i++)
-            for (int j = 0; j < nCol; j++)
-                tableData[i][j] = dtm.getValueAt(i, j);
-        return tableData;
-    }
+//    public Object[][] getTableData(JTable table) {
+//        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+//        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+//        Object[][] tableData = new Object[nRow][nCol];
+//        for (int i = 0; i < nRow; i++)
+//            for (int j = 0; j < nCol; j++)
+//                tableData[i][j] = dtm.getValueAt(i, j);
+//        return tableData;
+//    }
 
     public GUI() {
 
@@ -308,16 +309,16 @@ public class GUI {
                     bubbleSort();
                     saveAllRecord();
                     showRecords();
-                    System.out.println(sortCategory.getSelectedItem());
+//                    System.out.println(sortCategory.getSelectedItem());
                 }
                 if ("Merge sort" == sortCategory.getSelectedItem()) {
                     mergeSort();
                     saveAllRecord();
                     showRecords();
-                    System.out.println(sortCategory.getSelectedItem());
+//                    System.out.println(sortCategory.getSelectedItem());
                 }
                 if ("Radix sort" == sortCategory.getSelectedItem()) {
-                    System.out.println(sortCategory.getSelectedItem());
+//                    System.out.println(sortCategory.getSelectedItem());
                     radixSort();
                     saveAllRecord();
                     showRecords();
@@ -351,6 +352,8 @@ public class GUI {
                 showRecords();
             }
         });
+
+
     }
 }
 

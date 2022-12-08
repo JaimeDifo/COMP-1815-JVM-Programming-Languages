@@ -11,13 +11,12 @@ public class addAuthor extends JDialog {
     private JTextField lastnameField;
 
     public addAuthor() {
-        if (GUI.isEditing){
+        if (GUI.isEditing) {
             try {
-                ResultSet rs = GUI.stmt.executeQuery( "SELECT * FROM Authors WHERE ID = " + GUI.index + ";" );
+                ResultSet rs = GUI.stmt.executeQuery("SELECT * FROM Authors WHERE ID = " + GUI.index + ";");
                 firstnameField.setText(rs.getString("Firstname"));
                 lastnameField.setText(rs.getString("Lastname"));
-            }
-            catch (SQLException e1) {
+            } catch (SQLException e1) {
                 e1.printStackTrace();
             }
         }
@@ -54,32 +53,28 @@ public class addAuthor extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    public void addRecord(){
-        try{
-            int rs = GUI.stmt.executeUpdate( "INSERT INTO Authors (Firstname, Lastname)" +
-                    "VALUES ('" + firstnameField.getText() + "', '" + lastnameField.getText() + "');" );
-        }
-        catch (SQLException e1)
-        {
+    public void addRecord() {
+        try {
+            int rs = GUI.stmt.executeUpdate("INSERT INTO Authors (Firstname, Lastname)" +
+                    "VALUES ('" + firstnameField.getText() + "', '" + lastnameField.getText() + "');");
+        } catch (SQLException e1) {
             e1.printStackTrace();
         }
     }
 
-    public void editRecord(){
-        try{
-            int rs = GUI.stmt.executeUpdate( "UPDATE Authors SET Firstname = '" + firstnameField.getText() + "', Lastname = '" + lastnameField.getText() + "' WHERE ID = "+GUI.index+" ");
-        }
-        catch (SQLException e1)
-        {
+    public void editRecord() {
+        try {
+            int rs = GUI.stmt.executeUpdate("UPDATE Authors SET Firstname = '" + firstnameField.getText() +
+                    "', Lastname = '" + lastnameField.getText() + "' WHERE ID = " + GUI.index + " ");
+        } catch (SQLException e1) {
             e1.printStackTrace();
         }
     }
 
     private void onOK() {
-        if(GUI.isEditing){
+        if (GUI.isEditing) {
             editRecord();
-        }
-        else {
+        } else {
             addRecord();
         }
         dispose();
