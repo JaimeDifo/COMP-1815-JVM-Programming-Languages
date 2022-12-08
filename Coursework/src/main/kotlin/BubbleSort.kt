@@ -1,10 +1,11 @@
-class BubbleSort {
+object BubbleSort {
+
     var ticks = 0
     fun bubbleSort(bookList: MutableList<Book>): Int {
-
+        ticks = 0
         for (i in 0 until bookList.size - 1) {
             for (j in 0 until bookList.size - i - 1) {
-                ticks ++
+                ticks++
                 val book1 = bookList.get(j)
                 val title1: String = book1.title.lowercase()
                 val author1 = book1.author.lowercase()
@@ -22,7 +23,6 @@ class BubbleSort {
                         bookList[j] = book2
                         bookList[j + 1] = swap
                     }
-
                 }
             }
         }

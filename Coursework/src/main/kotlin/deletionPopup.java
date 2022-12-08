@@ -42,14 +42,13 @@ public class deletionPopup extends JDialog {
     }
 
     public void deleteRecord() {
-        try{
-            int rs = GUI.stmt.executeUpdate( "DELETE FROM " + delTargetTable + " WHERE ID = " + GUI.index + ";");
-        }
-        catch (SQLException e1)
-        {
+        try {
+            int rs = GUI.stmt.executeUpdate("DELETE FROM " + delTargetTable + " WHERE ID = " + GUI.index + ";");
+        } catch (SQLException e1) {
             e1.printStackTrace();
         }
     }
+
     private void onOK() {
         deleteRecord();
         dispose();

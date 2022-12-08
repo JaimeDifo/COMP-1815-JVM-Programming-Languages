@@ -61,22 +61,20 @@ public class GUI {
 
     // BubbleSort invoke
     public void bubbleSort() {
-        BubbleSort bubble = new BubbleSort();
-        bubble.bubbleSort(bookList);
-        System.out.println("BubbleSort - number of ticks " + bubble.getTicks());
+        BubbleSort.INSTANCE.bubbleSort(bookList);
+        System.out.println("BubbleSort - number of ticks " + BubbleSort.INSTANCE.getTicks());
     }
 
     // MergeSort invoke
     public void mergeSort() {
-        MergeSort merge = new MergeSort();
-        bookList = merge.mergeSort(bookList);
-        System.out.println("MergeSort - number of ticks = " + merge.getTicks());
+        MergeSort.INSTANCE.mergeSort(bookList);
+        System.out.println("MergeSort - number of ticks = " + MergeSort.INSTANCE.getTicks());
     }
 
+    // RadixSort invoke
     public void radixSort() {
-        RadixSort radix = new RadixSort();
-        bookList = radix.initRadixSort(bookList);
-        System.out.println("RadixSort - number of ticks = " + radix.ticks());
+        RadixSort.initRadixSort(bookList);
+        System.out.println("RadixSort - number of ticks = " + RadixSort.ticks());
     }
 
     public void showRecords() {
@@ -296,7 +294,8 @@ public class GUI {
             public void valueChanged(ListSelectionEvent event) {
                 if (event.getValueIsAdjusting()) {
                     if (MasterTable.getSelectedRow() >= 0) {
-                        index = Integer.parseInt((MasterTable.getValueAt(MasterTable.getSelectedRow(), 0)).toString());
+                        index = Integer.parseInt((MasterTable.getValueAt(MasterTable.getSelectedRow(),
+                                0)).toString());
                         System.out.println(index);
                     }
                 }
@@ -307,20 +306,20 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 if ("Bubble sort" == sortCategory.getSelectedItem()) {
                     bubbleSort();
-                    saveAllRecord();
+//                    saveAllRecord();
                     showRecords();
 //                    System.out.println(sortCategory.getSelectedItem());
                 }
                 if ("Merge sort" == sortCategory.getSelectedItem()) {
                     mergeSort();
-                    saveAllRecord();
+//                    saveAllRecord();
                     showRecords();
 //                    System.out.println(sortCategory.getSelectedItem());
                 }
                 if ("Radix sort" == sortCategory.getSelectedItem()) {
 //                    System.out.println(sortCategory.getSelectedItem());
                     radixSort();
-                    saveAllRecord();
+//                    saveAllRecord();
                     showRecords();
                 }
             }
