@@ -97,13 +97,7 @@ public class GUI {
                     String subject = rs.getString("Subject");
                     int year = rs.getInt("Year");
 
-                    Object[] newRow = new Object[]{
-                            rs.getInt("ID"),
-                            rs.getString("Title"),
-                            rs.getString("Author"),
-                            rs.getString("Publisher"),
-                            rs.getString("Subject"),
-                            rs.getInt("Year")};
+                    Object[] newRow = new Object[]{id, title, author, publisher, subject, year};
 
                     if (!searchedItem.get().equals("")) {
                         if (searchedItem.get().equals(newRow[searchedColumn.get()].toString())) {
@@ -131,10 +125,7 @@ public class GUI {
                     String firstname = rs.getString("Firstname");
                     String lastname = rs.getString("Lastname");
 
-                    Object[] newRow = new Object[]{
-                            rs.getInt("ID"),
-                            rs.getString("Firstname"),
-                            rs.getString("Lastname")};
+                    Object[] newRow = new Object[]{id,firstname,lastname};
 
                     if (!searchedItem.get().equals("")) {
                         if (searchedItem.get().equals(newRow[searchedColumn.get()].toString())) {
@@ -159,9 +150,7 @@ public class GUI {
                     int id = rs.getInt("ID");
                     String name = rs.getString("Name");
 
-                    Object[] newRow = new Object[]{
-                            rs.getInt("ID"),
-                            rs.getString("Name")};
+                    Object[] newRow = new Object[]{id,name};
 
                     if (!searchedItem.get().equals("")) {
                         if (searchedItem.get().equals(newRow[searchedColumn.get()].toString())) {
@@ -186,37 +175,23 @@ public class GUI {
             stmt.executeUpdate("DELETE FROM Books");
             // Make auto increment restart from 1
             stmt.executeUpdate("UPDATE sqlite_sequence SET seq=0 WHERE name='Books'");
-            for (Book book : bookList) {
-                int rs = GUI.stmt.executeUpdate("INSERT INTO Books (Title, Author, Publisher, Subject, Year)" +
-                        "VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getPublisher() +
-                        "', '" + book.getSubject() + "', '" + book.getYear() + "')");
-            }
 
-        } catch (SQLException e1) {
+            bookList.forEach(book -> {
+                try {
+                    int rs = GUI.stmt.executeUpdate("INSERT INTO Books (Title, Author, Publisher, Subject, Year)" +
+                            "VALUES ('" + book.getTitle() + "', '" + book.getAuthor() + "', '" + book.getPublisher() +
+                            "', '" + book.getSubject() + "', '" + book.getYear() + "')");
+                }
+                catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            });
+
+        }
+        catch (SQLException e1) {
             e1.printStackTrace();
         }
     }
-
-    public void search() {
-        showRecords();
-    }
-        // I BELIEVE THOSE ONE'S ARE NOT NEEDED
-//    public void sort() {
-//        sortColumn = sortCategory.getSelectedIndex() + 1;
-//        System.out.println(sortColumn);
-//        showRecords();
-//    }
-
-    //PARSE THE TABLE MODEL AS AN ARRAY
-//    public Object[][] getTableData(JTable table) {
-//        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
-//        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
-//        Object[][] tableData = new Object[nRow][nCol];
-//        for (int i = 0; i < nRow; i++)
-//            for (int j = 0; j < nCol; j++)
-//                tableData[i][j] = dtm.getValueAt(i, j);
-//        return tableData;
-//    }
 
     public GUI() {
 
@@ -327,7 +302,7 @@ public class GUI {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                search();
+                showRecords();
             }
         });
         dataCategory.addActionListener(new ActionListener() {
