@@ -1,13 +1,14 @@
 import scala.collection.mutable
 import scala.jdk.CollectionConverters._
 
-class RadixSort {
+object RadixSort {
 
   var ticks = 0
 
   def initRadixSort(books: java.util.List[Book]): java.util.List[Book] = {
     val scalaBooks = books.asScala.toArray
     var result = new Array[Book](books.size())
+    ticks = 0
     result = radixSort(scalaBooks)
     result.toList.asJava
   }

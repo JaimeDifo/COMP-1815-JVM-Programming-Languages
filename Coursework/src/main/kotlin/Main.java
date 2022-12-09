@@ -150,18 +150,15 @@ public class Main {
     }
 
     public static void bubbleSort() {
-        BubbleSort bubble = new BubbleSort();
-        bubble.bubbleSort(bookList);
-        Ticks = "BubbleSort - number of ticks " + bubble.getTicks();
+        BubbleSort.INSTANCE.bubbleSort(bookList);
+        Ticks = "BubbleSort - number of ticks " + BubbleSort.INSTANCE.getTicks();
     }
     public static void mergeSort() {
-        MergeSort merge = new MergeSort();
-        bookList = merge.mergeSort(bookList);
-        Ticks = "MergeSort - number of ticks = " + merge.getTicks();
+        MergeSort.INSTANCE.mergeSort(bookList);
+        Ticks = "MergeSort - number of ticks = " + MergeSort.INSTANCE.getTicks();
     }
     public static void radixSort() {
-        RadixSort radix = new RadixSort();
-        bookList = radix.initRadixSort(bookList);
-        Ticks = "RadixSort - number of ticks = " + radix.ticks();
+        RadixSort.initRadixSort(bookList);
+        Ticks = "RadixSort - number of ticks = " + RadixSort.ticks();
     }
 }

@@ -1,4 +1,4 @@
-class MergeSort {
+object MergeSort {
 
     var ticks = 0
 
@@ -10,6 +10,8 @@ class MergeSort {
         val middle = list.size / 2
         val left = list.subList(0, middle);
         val right = list.subList(middle, list.size);
+        ticks = 0
+
 
         return merge(mergeSort(left), mergeSort(right))
 

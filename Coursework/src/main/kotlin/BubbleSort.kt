@@ -1,7 +1,7 @@
-class BubbleSort {
+object BubbleSort {
     var ticks = 0
     fun bubbleSort(bookList: MutableList<Book>): Int {
-
+        ticks = 0
         for (i in 0 until bookList.size - 1) {
             for (j in 0 until bookList.size - i - 1) {
                 ticks ++
