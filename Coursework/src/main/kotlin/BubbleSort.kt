@@ -5,7 +5,7 @@ object BubbleSort { //Bubble Sort Algo//
         for (i in 0 until bookList.size - 1) {  
             for (j in 0 until bookList.size - i - 1) { //iteration to loop through the total number of the booklist.//
                 ticks ++
-                val book1 = bookList.get(j)  //initialization of variables, use in swapping.//
+                val book1 = bookList.get(j)  //initialization of variables, that wiull be used in swapping.//
                 val title1: String = book1.title.lowercase()
                 val author1 = book1.author.lowercase()
                 val book2 = bookList.get(j + 1)
