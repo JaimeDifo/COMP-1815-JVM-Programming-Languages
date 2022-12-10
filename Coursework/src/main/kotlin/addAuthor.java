@@ -10,7 +10,13 @@ public class addAuthor extends JDialog {
     private JTextField firstnameField;
     private JTextField lastnameField;
 
+
+
     public addAuthor() {
+        /**
+         *  Adding Authors into database
+         */
+
         if (GUI.isEditing) {
             try {
                 ResultSet rs = Main.stmt.executeQuery("SELECT * FROM Authors WHERE ID = " + GUI.index + ";");
@@ -26,34 +32,53 @@ public class addAuthor extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(new ActionListener() {
+
+
             public void actionPerformed(ActionEvent e) {
+                /**
+                 * Perform action on OK button
+                 */
                 onOK();
             }
         });
 
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                /**
+                 * Perform action on CANCEL button
+                 */
                 onCancel();
             }
         });
 
-        // call onCancel() when cross is clicked
+        /**
+         * call onCancel() when cross is clicked
+         */
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                /**
+                 * Close window on CANCEL button.
+                 */
                 onCancel();
             }
         });
 
-        // call onCancel() on ESCAPE
+
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                /**
+                 * call onCancel() on ESCAPE
+                 */
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void addRecord() {
+        /**
+         * add Author Firstname and Lastname into Authors Table
+         */
         try {
             int rs = Main.stmt.executeUpdate("INSERT INTO Authors (Firstname, Lastname)" +
                     "VALUES ('" + firstnameField.getText() + "', '" + lastnameField.getText() + "');");
@@ -63,6 +88,9 @@ public class addAuthor extends JDialog {
     }
 
     public void editRecord() {
+        /**
+         * add Author Firstname and Lastname into Authors Table
+         */
         try {
             int rs = Main.stmt.executeUpdate("UPDATE Authors SET Firstname = '" + firstnameField.getText() +
                     "', Lastname = '" + lastnameField.getText() + "' WHERE ID = " + GUI.index + " ");
@@ -72,6 +100,9 @@ public class addAuthor extends JDialog {
     }
 
     private void onOK() {
+        /**
+         * Perform operations on OK
+         */
         if (GUI.isEditing) {
             editRecord();
         } else {
@@ -81,7 +112,11 @@ public class addAuthor extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
+
+        /**
+         * Perform action on CANCEL button
+         */
+
         dispose();
     }
 
