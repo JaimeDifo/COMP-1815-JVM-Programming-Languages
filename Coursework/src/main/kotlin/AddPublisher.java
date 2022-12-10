@@ -10,6 +10,11 @@ public class AddPublisher extends JDialog {
     private JTextField nameField;
 
     public AddPublisher() {
+
+        /**
+         * Add Publisher record to the Publisher table
+         */
+
         if (GUI.isEditing){
             try {
                 ResultSet rs = Main.stmt.executeQuery( "SELECT * FROM Publishers WHERE ID = " + GUI.index + ";" );
@@ -26,12 +31,18 @@ public class AddPublisher extends JDialog {
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                /**
+                 * Add Publisher on OK button
+                 */
                 onOK();
             }
         });
 
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                /**
+                 * Perform action on CANCEL button
+                 */
                 onCancel();
             }
         });
@@ -40,19 +51,27 @@ public class AddPublisher extends JDialog {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                /**
+                 * Close window on CANCEL button
+                 */
                 onCancel();
             }
         });
 
-        // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                /**
+                 * call onCancel() on ESCAPE
+                 */
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void addRecord(){
+        /**
+         * add Publisher record into Publisher table
+         */
         try{
             int rs = Main.stmt.executeUpdate( "INSERT INTO Publishers (Name)" +
                     "VALUES ('" + nameField.getText() + "');" );
@@ -64,6 +83,9 @@ public class AddPublisher extends JDialog {
     }
 
     public void editRecord(){
+        /**
+         * edit selcted Publisher record in Publisher table
+         */
         try{
             int rs = Main.stmt.executeUpdate( "UPDATE Publishers SET Name = '" + nameField.getText() + "' WHERE ID = "+GUI.index+" ");
         }
@@ -74,6 +96,9 @@ public class AddPublisher extends JDialog {
     }
 
     private void onOK() {
+        /**
+         * Perform operations on OK
+         */
         if(GUI.isEditing){
             editRecord();
         }
@@ -84,7 +109,9 @@ public class AddPublisher extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
+        /**
+         * Perform action on CANCEL button
+         */
         dispose();
     }
 
