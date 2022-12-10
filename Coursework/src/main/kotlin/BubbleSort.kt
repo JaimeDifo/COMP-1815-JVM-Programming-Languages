@@ -1,5 +1,5 @@
 object BubbleSort { //Bubble Sort Algo//
-    var ticks = 0       //Counts the number of moving in code.//
+    var ticks = 0       //Counts the number of movements in code.//
     fun bubbleSort(bookList: MutableList<Book>): Int {
         ticks = 0
         for (i in 0 until bookList.size - 1) {  //iteration to loop through the total number of the booklist.//
