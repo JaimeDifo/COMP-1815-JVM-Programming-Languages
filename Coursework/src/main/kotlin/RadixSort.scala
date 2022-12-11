@@ -5,12 +5,13 @@ object RadixSort {
 
   var ticks = 0
 
-  def initRadixSort(books: java.util.List[Book]): java.util.List[Book] = {
+  def initRadixSort(books: java.util.List[Book]): Unit = {
     val scalaBooks = books.asScala.toArray
     var result = new Array[Book](books.size())
     ticks = 0
     result = radixSort(scalaBooks)
     result.toList.asJava
+    Main.bookList = result.toList.asJava
   }
 
   def radixSort(books: Array[Book]): Array[Book] = {
