@@ -24,40 +24,39 @@ object MergeSort { //Merge Sort//
         var indexRight = 0
         val newList: MutableList<Book> = mutableListOf()
 
-
-
-
-        while (indexLeft < left.count() && indexRight < right.count()) { //iteration to loop through the total number of the booklist.//
+        while (indexLeft < left.count() && indexRight < right.count()) {
             val book1 = left[indexLeft]
             val book2 = right[indexRight]
             ticks ++
 
-            if (book1.author.lowercase() < book2.author.lowercase()) { //If book1 less than book2, swap them.//
+            if(book1.author < book2.author) {
                 newList.add(book1)
-                indexLeft++ //increment +1//
-
-            } else if (book2.author < book1.author) { //Else if book2 less than book, swap them.//
+                indexLeft++
+            } else if (book2.author < book1.author) {
                 newList.add(book2)
-                indexRight++ //increment +1//
-
-            } else { //else authors are the same, swap by book title.//
-                if (book1.title < book2.title) {
+                indexRight++
+            } else { // In case authors are the same, comparison by title is preferable
+                if(book1.title < book2.title) {
                     newList.add(book1)
-                    indexLeft++ //increment +1//
-
-                } else if (book2.title < book1.title) { //else authors are the same, swap by book title.//
+                    indexLeft++
+                } else if (book2.title < book1.title) {
                     newList.add(book2)
-                    indexRight++ //increment +1//
+                    indexRight++
+                } else if (book1.title.equals(book2.title)) { // If these two fields are identical, both are added and the algorithm carries on
+                    newList.add(book1)
+                    newList.add(book2)
+                    indexRight++
+                    indexLeft++
                 }
-
             }
-
+            System.out.println("1");
         }
 
         while (indexLeft < left.size) { //While the left side of list is still less than its total continue to loop//
             newList.add(left[indexLeft])
             indexLeft++
             ticks ++
+            System.out.println("2");
 
 
         }
@@ -66,6 +65,7 @@ object MergeSort { //Merge Sort//
             newList.add(right[indexRight])
             indexRight++
             ticks ++
+            System.out.println("3");
 
         }
 
