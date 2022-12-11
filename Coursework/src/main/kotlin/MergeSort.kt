@@ -49,24 +49,18 @@ object MergeSort { //Merge Sort//
                     indexLeft++
                 }
             }
-            System.out.println("1");
         }
 
         while (indexLeft < left.size) { //While the left side of list is still less than its total continue to loop//
             newList.add(left[indexLeft])
             indexLeft++
             ticks ++
-            System.out.println("2");
-
-
         }
 
         while (indexRight < right.size) { //While the right side of list is still less than its total continue to loop//
             newList.add(right[indexRight])
             indexRight++
             ticks ++
-            System.out.println("3");
-
         }
 
 
