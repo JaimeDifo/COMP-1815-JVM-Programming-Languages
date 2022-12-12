@@ -30,7 +30,7 @@ object RadixSort {
       var currentData = ""
       // Go through each book and add the book to their appropriate groups.
       paddedData.foreach(book => {
-        currentData = book.getAuthor
+        currentData = book.getAuthor.toLowerCase();
 
         // Checks if the letter that we're looking at already exists in the TreeMap, if it doesn't, create a new key.
         if (treeMap.contains(currentData(letter))) {

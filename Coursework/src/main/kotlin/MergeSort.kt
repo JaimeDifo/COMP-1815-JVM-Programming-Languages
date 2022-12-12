@@ -29,20 +29,20 @@ object MergeSort { //Merge Sort//
             val book2 = right[indexRight]
             ticks ++
 
-            if(book1.author < book2.author) {
+            if(book1.author.toLowerCase() < book2.author.toLowerCase()) {
                 newList.add(book1)
                 indexLeft++
-            } else if (book2.author < book1.author) {
+            } else if (book2.author.toLowerCase() < book1.author.toLowerCase()) {
                 newList.add(book2)
                 indexRight++
             } else { // In case authors are the same, comparison by title is preferable
-                if(book1.title < book2.title) {
+                if(book1.title.toLowerCase() < book2.title.toLowerCase()) {
                     newList.add(book1)
                     indexLeft++
-                } else if (book2.title < book1.title) {
+                } else if (book2.title.toLowerCase() < book1.title.toLowerCase()) {
                     newList.add(book2)
                     indexRight++
-                } else if (book1.title.equals(book2.title)) { // If these two fields are identical, both are added and the algorithm carries on
+                } else if (book1.title.toLowerCase().equals(book2.title.toLowerCase())) { // If these two fields are identical, both are added and the algorithm carries on
                     newList.add(book1)
                     newList.add(book2)
                     indexRight++
